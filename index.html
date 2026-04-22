@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>働く心のコンディショナー | K&Aプロジェクト</title>
+<meta name="description" content="新潟で働く人を支える産業カウンセラーによるメンタルヘルス支援サービス。予防から復職、ハラスメント対応まで。">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --main: #7BA88C; --dark: #5B8D6E; --darker: #4A7A5A; --light: #EAF0EA; --bg: #FEFDFB; --text: #3A3A37; --text-light: #5A5A57; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+
+.nav-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(254, 253, 251, 0.95); backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(123, 168, 140, 0.2); transform: translateY(-100%); transition: transform 0.3s ease; }
+.nav-header.visible { transform: translateY(0); }
+.nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--dark); }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a { text-decoration: none; color: var(--text-light); font-size: 0.95rem; transition: color 0.3s; }
+.nav-links a:hover { color: var(--main); }
+
+section { min-height: 100vh; padding: 100px 5%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+.section-subtitle { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; opacity: 0; transform: translateY(20px); transition: all 0.8s ease 0.2s; }
+.in-view .section-title, .in-view .section-subtitle { opacity: 1; transform: translateY(0); }
+
+.hero { background: linear-gradient(135deg, #F5F2ED 0%, #E8F0E7 100%); text-align: center; padding-top: 0; }
+.hero-content { max-width: 800px; }
+.hero-icon { font-size: 5rem; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+.hero-title { font-size: 3rem; font-weight: 700; line-height: 1.4; margin-bottom: 1rem; }
+.hero-subtitle { font-size: 1.4rem; color: var(--dark); font-style: italic; margin-bottom: 2rem; }
+.hero-desc { font-size: 1.2rem; color: var(--text-light); line-height: 2; }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: white; padding: 0.6rem 1.2rem; border-radius: 50px; font-size: 0.9rem; color: var(--dark); margin-top: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+.scroll-hint { margin-top: 2rem; animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+.scroll-hint span { display: block; font-size: 0.9rem; color: var(--text-light); }
+
+.message { background: var(--bg); }
+.message-box { background: var(--light); padding: 3rem 4rem; border-left: 6px solid var(--main); border-radius: 12px; max-width: 800px; opacity: 0; transform: translateX(-50px); transition: all 0.8s ease 0.3s; }
+.in-view .message-box { opacity: 1; transform: translateX(0); }
+.message-box p { font-size: 1.4rem; font-weight: 500; line-height: 2.2; }
+
+.activity { background: var(--light); }
+.activity-container { position: relative; width: 100%; max-width: 850px; margin-top: 1rem; }
+.activity-svg { width: 100%; }
+.activity-svg svg { width: 100%; height: auto; max-height: calc(100vh - 280px); }
+.activity-circle { cursor: pointer; transition: filter 0.3s; }
+.activity-circle:hover { filter: brightness(1.1) drop-shadow(0 5px 15px rgba(0,0,0,0.15)); }
+.activity-tooltip { position: absolute; background: white; padding: 1.2rem 1.5rem; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); font-size: 1rem; max-width: 280px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 10; line-height: 1.7; }
+.activity-tooltip.show { opacity: 1; }
+.activity-credit { font-size: 0.85rem; color: #8B8B86; margin-top: 1rem; }
+
+.problems { background: var(--bg); }
+.problems-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 900px; margin-top: 1rem; }
+.problem-card { background: white; border: 2px solid #E5E5E1; border-radius: 16px; padding: 2rem; text-align: left; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+.in-view .problem-card { opacity: 1; transform: translateY(0); }
+.in-view .problem-card:nth-child(1) { transition-delay: 0.1s; }
+.in-view .problem-card:nth-child(2) { transition-delay: 0.2s; }
+.in-view .problem-card:nth-child(3) { transition-delay: 0.3s; }
+.in-view .problem-card:nth-child(4) { transition-delay: 0.4s; }
+.problem-card:hover { border-color: var(--main); box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: translateY(-5px); }
+.problem-card strong { color: var(--dark); font-size: 1.2rem; display: block; margin-bottom: 0.5rem; }
+.problem-card p { color: var(--text-light); }
+
+.scenes, .services { background: var(--light); overflow: hidden; }
+.services { background: var(--bg); }
+.scenes-wrapper, .services-wrapper { width: 100%; overflow: hidden; }
+.scenes-carousel, .services-carousel { display: flex; gap: 1.5rem; padding: 2rem 5%; transition: transform 0.4s ease; }
+.scene-card { flex: 0 0 260px; background: white; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.08); transition: transform 0.3s; }
+.scene-card:hover { transform: scale(1.03); }
+.scene-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+.scene-card h3 { font-size: 1.2rem; margin-bottom: 0.4rem; color: var(--text); }
+.scene-card p { color: var(--text-light); font-size: 0.95rem; }
+.service-card { flex: 0 0 250px; background: white; border-radius: 20px; padding: 1.8rem 1.5rem; box-shadow: 0 8px 30px rgba(0,0,0,0.08); text-align: left; transition: transform 0.3s; }
+.service-card:hover { transform: scale(1.02); }
+.service-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
+.service-card h3 { color: var(--dark); font-size: 1.1rem; margin-bottom: 0.2rem; }
+.service-time { color: var(--main); font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
+.service-card p { color: var(--text-light); font-size: 0.9rem; }
+.scroll-indicator { display: flex; justify-content: center; gap: 8px; margin-top: 1.5rem; }
+.scroll-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(123, 168, 140, 0.3); transition: all 0.3s; cursor: pointer; }
+.scroll-dot.active { background: var(--main); transform: scale(1.3); }
+.carousel-hint { font-size: 0.9rem; color: var(--text-light); margin-top: 1rem; }
+
+.approach { background: var(--bg); }
+.approach-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1000px; margin-top: 1rem; }
+.approach-card { background: white; border-radius: 20px; padding: 2.5rem 1.5rem; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.06); opacity: 0; transform: scale(0.8); transition: all 0.6s ease; }
+.in-view .approach-card { opacity: 1; transform: scale(1); }
+.in-view .approach-card:nth-child(1) { transition-delay: 0.1s; }
+.in-view .approach-card:nth-child(2) { transition-delay: 0.25s; }
+.in-view .approach-card:nth-child(3) { transition-delay: 0.4s; }
+.in-view .approach-card:nth-child(4) { transition-delay: 0.55s; }
+.approach-icon { font-size: 3rem; margin-bottom: 1rem; }
+.approach-card h3 { color: var(--dark); font-size: 1.2rem; margin-bottom: 0.5rem; }
+.approach-card p { color: var(--text-light); font-size: 0.95rem; }
+
+.flow { background: linear-gradient(135deg, var(--main) 0%, var(--dark) 100%); color: white; padding: 60px 5%; }
+.flow .section-title { color: white; margin-bottom: 0.5rem; }
+.flow .section-subtitle { color: rgba(255,255,255,0.85); margin-bottom: 1rem; }
+.flow-circle-container { position: relative; width: 100%; max-width: min(90vh, 750px); aspect-ratio: 1; margin: 0 auto; opacity: 0; transform: scale(0.8); transition: all 0.8s ease 0.3s; }
+.in-view .flow-circle-container { opacity: 1; transform: scale(1); }
+.flow-svg { width: 100%; height: 100%; }
+@keyframes rotateFlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.flow-rotating-ring { transform-origin: center; animation: rotateFlow 45s linear infinite; }
+@keyframes particleMove { 0% { offset-distance: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+.flow-particle { offset-path: path('M 300 80 A 220 220 0 1 1 299.9 80'); animation: particleMove 8s linear infinite; }
+.flow-particle:nth-child(2) { animation-delay: -4s; }
+.flow-particle:nth-child(3) { animation-delay: -4s; }
+.flow-particle:nth-child(4) { animation-delay: -6s; }
+.flow-node { cursor: pointer; transition: transform 0.3s; }
+.flow-node:hover { transform: scale(1.1); }
+.flow-desc { margin-top: 1.5rem; text-align: center; font-size: 1.1rem; opacity: 0.9; max-width: 600px; line-height: 2; }
+
+.pricing { background: var(--light); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1000px; margin-top: 1rem; }
+.pricing-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.06); opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+.in-view .pricing-card { opacity: 1; transform: translateY(0); }
+.in-view .pricing-card:nth-child(1) { transition-delay: 0.1s; }
+.in-view .pricing-card:nth-child(2) { transition-delay: 0.2s; }
+.in-view .pricing-card:nth-child(3) { transition-delay: 0.3s; }
+.pricing-card.featured { border: 3px solid var(--main); transform: scale(1.05); box-shadow: 0 15px 50px rgba(123,168,140,0.25); }
+.in-view .pricing-card.featured { transform: scale(1.05); }
+.pricing-badge { background: var(--main); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; display: inline-block; }
+.pricing-card h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.pricing-price { font-size: 2.2rem; font-weight: 700; color: var(--main); margin: 0.8rem 0; }
+.pricing-period { color: #8B8B86; font-size: 0.9rem; }
+.pricing-list { text-align: left; margin-top: 1.5rem; }
+.pricing-list li { padding: 0.5rem 0; list-style: none; color: var(--text-light); }
+.pricing-list li::before { content: "✓ "; color: var(--main); font-weight: 700; }
+
+.collab { background: var(--bg); }
+.collab-steps { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
+.collab-step { background: white; border-radius: 20px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.06); min-width: 200px; opacity: 0; transform: translateX(-30px); transition: all 0.6s ease; }
+.in-view .collab-step { opacity: 1; transform: translateX(0); }
+.in-view .collab-step:nth-child(1) { transition-delay: 0.1s; }
+.in-view .collab-step:nth-child(3) { transition-delay: 0.3s; }
+.in-view .collab-step:nth-child(5) { transition-delay: 0.5s; }
+.collab-step .step-num { font-size: 0.85rem; font-weight: 700; color: var(--main); margin-bottom: 0.5rem; }
+.collab-step .step-icon { font-size: 3rem; margin: 0.5rem 0; }
+.collab-step h4 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.collab-step p { color: var(--text-light); font-size: 0.95rem; }
+.collab-arrow { font-size: 2rem; color: var(--main); opacity: 0; transition: opacity 0.6s ease 0.2s; }
+.in-view .collab-arrow { opacity: 1; }
+
+.trust { background: var(--light); }
+.trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 900px; margin-top: 1rem; }
+.trust-card { background: white; border-radius: 16px; padding: 2rem; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.05); opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+.in-view .trust-card { opacity: 1; transform: translateY(0); }
+.in-view .trust-card:nth-child(1) { transition-delay: 0.1s; }
+.in-view .trust-card:nth-child(2) { transition-delay: 0.2s; }
+.in-view .trust-card:nth-child(3) { transition-delay: 0.3s; }
+.trust-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.trust-card h3 { font-size: 1.1rem; color: var(--dark); margin-bottom: 0.5rem; }
+.trust-card p { color: var(--text-light); font-size: 0.95rem; }
+
+.contact { background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%); color: white; }
+.contact .section-title { color: white; }
+.contact .section-subtitle { color: rgba(255,255,255,0.9); }
+.contact-box { background: rgba(255,255,255,0.95); color: var(--text); padding: 3rem 4rem; border-radius: 24px; margin-top: 1rem; box-shadow: 0 15px 50px rgba(0,0,0,0.2); text-align: center; opacity: 0; transform: scale(0.9); transition: all 0.6s ease 0.3s; }
+.in-view .contact-box { opacity: 1; transform: scale(1); }
+.contact-message { font-size: 1.3rem; font-weight: 600; color: var(--dark); margin-bottom: 2rem; line-height: 1.8; }
+.contact-item { margin: 1.5rem 0; font-size: 1.3rem; }
+.contact-item strong { display: block; color: var(--text-light); font-size: 0.95rem; margin-bottom: 0.3rem; }
+.contact-item span { color: var(--dark); font-weight: 600; }
+.contact-cta { margin-top: 2rem; font-size: 1rem; color: var(--text-light); }
+.contact-note { margin-top: 1.5rem; font-size: 0.9rem; color: #8B8B86; }
+
+footer { background: var(--text); color: white; padding: 3rem 5%; }
+.footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; }
+.footer-brand h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+.footer-brand p { font-size: 0.9rem; color: #aaa; line-height: 1.8; }
+.footer-links h4 { font-size: 1rem; margin-bottom: 1rem; }
+.footer-links a { display: block; color: #aaa; text-decoration: none; font-size: 0.9rem; margin-bottom: 0.5rem; transition: color 0.3s; }
+.footer-links a:hover { color: white; }
+.footer-bottom { text-align: center; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid #555; font-size: 0.85rem; color: #888; }
+
+@media (max-width: 900px) {
+  .problems-grid, .pricing-grid, .trust-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .approach-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-card.featured, .in-view .pricing-card.featured { transform: none; }
+  .hero-title { font-size: 2.2rem; }
+  .section-title { font-size: 2rem; }
+  .collab-steps { flex-direction: column; }
+  .collab-arrow { transform: rotate(90deg); }
+  .nav-links { display: none; }
+  .footer-content { grid-template-columns: 1fr; text-align: center; }
+  .flow-circle-container { max-width: min(80vh, 550px); }
+  .scene-card { flex: 0 0 240px; }
+  .service-card { flex: 0 0 230px; }
+}
+@media (max-width: 600px) {
+  section { padding: 80px 5%; }
+  .approach-grid { grid-template-columns: 1fr; max-width: 300px; }
+  .hero-title { font-size: 1.8rem; }
+  .message-box { padding: 2rem; }
+  .message-box p { font-size: 1.15rem; }
+  .contact-box { padding: 2rem; }
+  .scene-card { flex: 0 0 220px; }
+  .service-card { flex: 0 0 210px; }
+  .flow-circle-container { max-width: min(75vh, 420px); }
+  .flow { padding: 50px 5%; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-header" id="navHeader">
+  <div class="nav-logo">💚 働く心のコンディショナー</div>
+  <div class="nav-links"><a href="#activity">活動領域</a><a href="#scenes">サポート</a><a href="#pricing">料金</a><a href="#contact">お問い合わせ</a></div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-icon">💚</div>
+    <h1 class="hero-title">新潟で働く人を支える。<br>働く心のコンディショナー</h1>
+    <p class="hero-subtitle">〜 予防から復職、そしてその先へ 〜</p>
+    <p class="hero-desc">不調になる前から関わる。復職後も安心。<br>ハラスメント相談後のフォローも。<br>産業カウンセラーによる心理援助で、働く人の心を整えます。</p>
+    <div class="hero-badge"><span>🎓</span><span>産業カウンセラー資格保有者が対応</span></div>
+    <div class="scroll-hint"><span>↓ Scroll</span></div>
+  </div>
+</section>
+
+<section class="message" id="message">
+  <h2 class="section-title">ご挨拶</h2>
+  <div class="message-box"><p>新潟で働く人が、いきいきとしたワーキングライフを送ること、<br>それを支える担当者さまの心の健康を<br>徹底的に守ることにこだわったサービスです</p></div>
+</section>
+
+<section class="activity" id="activity">
+  <h2 class="section-title">産業カウンセラーの活動領域</h2>
+  <p class="section-subtitle">各領域をタップ / ホバーで詳細表示</p>
+  <div class="activity-container">
+    <div class="activity-svg">
+      <svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+        <g class="activity-circle" data-tooltip="mental"><circle cx="300" cy="155" r="125" fill="#FFE599" opacity="0.9"/><text x="300" y="125" text-anchor="middle" font-size="56">❤️</text><text x="300" y="175" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">メンタルヘルス</text><text x="300" y="205" text-anchor="middle" font-size="18" fill="#333">対策への支援</text></g>
+        <g class="activity-circle" data-tooltip="career"><circle cx="175" cy="325" r="125" fill="#C5E1A5" opacity="0.9"/><text x="175" y="300" text-anchor="middle" font-size="56">👔</text><text x="175" y="350" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">キャリア形成</text><text x="175" y="380" text-anchor="middle" font-size="18" fill="#333">への支援</text></g>
+        <g class="activity-circle" data-tooltip="workplace"><circle cx="425" cy="325" r="125" fill="#B3E5FC" opacity="0.9"/><text x="425" y="290" text-anchor="middle" font-size="56">🏢</text><text x="425" y="335" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">職場における</text><text x="425" y="362" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">人間関係開発</text><text x="425" y="390" text-anchor="middle" font-size="16" fill="#333">・職場環境改善</text></g>
+      </svg>
+    </div>
+    <div class="activity-tooltip" id="tooltip"></div>
+  </div>
+  <p class="activity-credit">引用元：日本産業カウンセラー協会</p>
+</section>
+
+<section class="problems" id="problems">
+  <h2 class="section-title">こんなお悩みありませんか？</h2>
+  <p class="section-subtitle">多くの企業が抱える課題です</p>
+  <div class="problems-grid">
+    <div class="problem-card"><strong>😰 予兆なく突然の離職や休職</strong><p>気づいた時には手遅れ…早期発見の仕組みがない</p></div>
+    <div class="problem-card"><strong>📉 兆しが出始めた従業員への対応</strong><p>出勤しているけど成果が出ない、どう接すればいいか分からない</p></div>
+    <div class="problem-card"><strong>💔 ハラスメント相談後のケア</strong><p>事実確認後の心理的な回復サポートが不足している</p></div>
+    <div class="problem-card"><strong>😓 管理職・人事の心理的負担</strong><p>メンタル対応が業務を圧迫、担当者自身のケアも必要</p></div>
+  </div>
+</section>
+
+<section class="scenes" id="scenes">
+  <h2 class="section-title">様々な場面でサポート</h2>
+  <p class="section-subtitle">スクロールで横移動</p>
+  <div class="scenes-wrapper">
+    <div class="scenes-carousel" id="scenesCarousel">
+      <div class="scene-card"><div class="scene-icon">💚</div><h3>整える</h3><p>日常の集中力維持・向上をサポート</p></div>
+      <div class="scene-card"><div class="scene-icon">🔔</div><h3>予防（兆し対応）</h3><p>不調になる前に関わり早期対応</p></div>
+      <div class="scene-card"><div class="scene-icon">🏥</div><h3>専門家連携</h3><p>保健師・産業医と連携</p></div>
+      <div class="scene-card"><div class="scene-icon">🌿</div><h3>復職後サポート</h3><p>復職後の心の葛藤に寄り添う</p></div>
+      <div class="scene-card"><div class="scene-icon">👔</div><h3>管理職サポート</h3><p>部下対応の悩みを共に考える</p></div>
+      <div class="scene-card"><div class="scene-icon">🏢</div><h3>職場環境づくり</h3><p>対人スキル向上研修を提供</p></div>
+    </div>
+  </div>
+  <div class="scroll-indicator" id="scenesIndicator"></div>
+  <p class="carousel-hint">マウスホイール or スワイプ</p>
+</section>
+
+<section class="approach" id="approach">
+  <h2 class="section-title">私たちのアプローチ</h2>
+  <p class="section-subtitle">心理援助の専門家として</p>
+  <div class="approach-grid">
+    <div class="approach-card"><div class="approach-icon">🌱</div><h3>予防を重視</h3><p>未然予防と再発防止を強化</p></div>
+    <div class="approach-card"><div class="approach-icon">🎯</div><h3>専門性に集中</h3><p>心理援助に専念、柔軟な医療連携</p></div>
+    <div class="approach-card"><div class="approach-icon">👥</div><h3>寄り添う</h3><p>全ての従業員の声に耳を傾ける</p></div>
+    <div class="approach-card"><div class="approach-icon">📈</div><h3>組織改善へ</h3><p>個別対応から組織提案まで</p></div>
+  </div>
+</section>
+
+<section class="flow" id="flow">
+  <h2 class="section-title">私たちの支援の流れ</h2>
+  <p class="section-subtitle">継続的なサイクルで支援します</p>
+  <div class="flow-circle-container">
+    <svg class="flow-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.3)"/><stop offset="50%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0.3)"/></linearGradient></defs>
+      <g class="flow-rotating-ring"><circle cx="300" cy="300" r="240" fill="none" stroke="url(#ringGradient)" stroke-width="4" stroke-dasharray="30 20"/></g>
+      <circle class="flow-particle" r="8" fill="white" opacity="0.8"/><circle class="flow-particle" r="6" fill="white" opacity="0.6"/><circle class="flow-particle" r="8" fill="white" opacity="0.8"/><circle class="flow-particle" r="6" fill="white" opacity="0.6"/>
+      <path d="M 300 60 A 240 240 0 0 1 510 180" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" marker-end="url(#arrowW)"/>
+      <path d="M 510 180 A 240 240 0 0 1 450 480" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" marker-end="url(#arrowW)"/>
+      <path d="M 450 480 A 240 240 0 0 1 150 480" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" marker-end="url(#arrowW)"/>
+      <path d="M 150 480 A 240 240 0 0 1 90 180" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" marker-end="url(#arrowW)"/>
+      <path d="M 90 180 A 240 240 0 0 1 300 60" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" marker-end="url(#arrowW)"/>
+      <defs><marker id="arrowW" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="rgba(255,255,255,0.5)"/></marker></defs>
+      <g class="flow-node"><circle cx="300" cy="95" r="70" fill="#D4A5D4" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.2))"/><text x="300" y="80" text-anchor="middle" font-size="40">👂</text><text x="300" y="115" text-anchor="middle" font-size="20" font-weight="bold" fill="white">傾聴</text></g>
+      <g class="flow-node"><circle cx="495" cy="230" r="70" fill="#FF9FB2" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.2))"/><text x="495" y="215" text-anchor="middle" font-size="40">🔍</text><text x="495" y="250" text-anchor="middle" font-size="20" font-weight="bold" fill="white">発見</text></g>
+      <g class="flow-node"><circle cx="420" cy="465" r="70" fill="#7DD3C0" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.2))"/><text x="420" y="450" text-anchor="middle" font-size="40">🤝</text><text x="420" y="485" text-anchor="middle" font-size="20" font-weight="bold" fill="white">連携</text></g>
+      <g class="flow-node"><circle cx="180" cy="465" r="70" fill="#9FD356" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.2))"/><text x="180" y="450" text-anchor="middle" font-size="40">🌱</text><text x="180" y="485" text-anchor="middle" font-size="20" font-weight="bold" fill="white">回復</text></g>
+      <g class="flow-node"><circle cx="105" cy="230" r="70" fill="#FDBF7E" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.2))"/><text x="105" y="215" text-anchor="middle" font-size="40">✨</text><text x="105" y="250" text-anchor="middle" font-size="20" font-weight="bold" fill="white">成長</text></g>
+      <circle cx="300" cy="300" r="60" fill="rgba(255,255,255,0.15)"/><text x="300" y="290" text-anchor="middle" font-size="16" fill="white" font-weight="bold">継続的な</text><text x="300" y="315" text-anchor="middle" font-size="16" fill="white" font-weight="bold">サイクル</text>
+    </svg>
+  </div>
+  <p class="flow-desc">成長した後も、新たな課題に対して傾聴から始まる<br>継続的なサイクルで従業員と組織を支援します</p>
+</section>
+
+<section class="services" id="services">
+  <h2 class="section-title">サービス内容</h2>
+  <p class="section-subtitle">スクロールで横移動</p>
+  <div class="services-wrapper">
+    <div class="services-carousel" id="servicesCarousel">
+      <div class="service-card"><div class="service-icon">🤝</div><h3>担当者の伴走</h3><div class="service-time">年間12時間</div><p>「社外の同僚」として相談・壁打ちをサポート</p></div>
+      <div class="service-card"><div class="service-icon">👂</div><h3>社員向けセッション</h3><div class="service-time">年間24時間</div><p>モヤモヤの言語化、リフレッシュのお手伝い</p></div>
+      <div class="service-card"><div class="service-icon">👔</div><h3>ラインケア相談</h3><div class="service-time">スポット対応</div><p>管理職の部下対応の悩みを共に考えます</p></div>
+      <div class="service-card"><div class="service-icon">📋</div><h3>ヒアリング</h3><div class="service-time">スポット対応</div><p>ハラスメント当事者聴取を専門的に実施</p></div>
+      <div class="service-card"><div class="service-icon">📊</div><h3>職場の状態可視化</h3><div class="service-time">調査・分析</div><p>エンゲージメント・ハラスメント調査</p></div>
+    </div>
+  </div>
+  <div class="scroll-indicator" id="servicesIndicator"></div>
+  <p class="carousel-hint">マウスホイール or スワイプ</p>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2 class="section-title">料金プラン</h2>
+  <p class="section-subtitle">企業規模に合わせて選べる3プラン</p>
+  <div class="pricing-grid">
+    <div class="pricing-card"><h3>ハーフプラン</h3><div class="pricing-price">¥120,000</div><div class="pricing-period">年間（税抜）</div><ul class="pricing-list"><li>社員セッション：12時間</li><li>担当者支援：12時間</li></ul></div>
+    <div class="pricing-card featured"><div class="pricing-badge">推奨</div><h3>基本プラン</h3><div class="pricing-price">¥200,000</div><div class="pricing-period">年間（税抜）</div><ul class="pricing-list"><li>社員セッション：24時間</li><li>担当者支援：12時間</li><li>状態可視化レポート</li></ul></div>
+    <div class="pricing-card"><h3>フルサポート</h3><div class="pricing-price">¥350,000</div><div class="pricing-period">年間（税抜）</div><ul class="pricing-list"><li>基本プラン内容</li><li>セルフケア研修</li><li>ラインケア研修</li></ul></div>
+  </div>
+</section>
+
+<section class="collab" id="collab">
+  <h2 class="section-title">産業保健専門家との連携</h2>
+  <p class="section-subtitle">ご希望に応じて、保健師・医師との連携が可能です</p>
+  <div class="collab-steps">
+    <div class="collab-step"><div class="step-num">STEP 01</div><div class="step-icon">👂</div><h4>初期対応</h4><p>産業カウンセラーが<br>傾聴・体調確認</p></div>
+    <span class="collab-arrow">→</span>
+    <div class="collab-step"><div class="step-num">STEP 02</div><div class="step-icon">🏥</div><h4>医療的対応</h4><p>保健師・医師が<br>医療的評価・判断</p></div>
+    <span class="collab-arrow">→</span>
+    <div class="collab-step"><div class="step-num">STEP 03</div><div class="step-icon">🌱</div><h4>継続支援</h4><p>復職後フォロー<br>再発防止</p></div>
+  </div>
+</section>
+
+<section class="trust" id="trust">
+  <h2 class="section-title">安心してご利用いただくために</h2>
+  <p class="section-subtitle">私たちの約束</p>
+  <div class="trust-grid">
+    <div class="trust-card"><div class="trust-icon">🔒</div><h3>守秘義務の徹底</h3><p>相談内容は厳重に管理。本人の同意なく第三者に開示することはありません。</p></div>
+    <div class="trust-card"><div class="trust-icon">🎓</div><h3>有資格者が対応</h3><p>産業カウンセラー資格を持つ専門家が、すべてのセッションを担当します。</p></div>
+    <div class="trust-card"><div class="trust-icon">📍</div><h3>新潟県全域対応</h3><p>オンライン・訪問どちらも対応可能。県内どこからでもご利用いただけます。</p></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2 class="section-title">まずはお話しましょう</h2>
+  <p class="section-subtitle">初回相談は無料です</p>
+  <div class="contact-box">
+    <div class="contact-message">働く人の心と、経営の想いが<br>ひとつになる組織へ</div>
+    <div class="contact-item"><strong>📧 メール</strong><span>contact@ak-analytics.jp</span></div>
+    <div class="contact-item"><strong>📞 お電話</strong><span>050-6861-4697</span></div>
+    <p class="contact-cta">K&Aプロジェクト｜働く心のコンディショナー</p>
+    <p class="contact-note">※ 営業時間：平日 9:00〜18:00<br>※ 土日祝日のご相談も事前予約で対応可能です</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand"><h3>💚 働く心のコンディショナー</h3><p>K&Aプロジェクト合同会社<br>新潟県を中心に、中小企業の<br>メンタルヘルス支援を行っています。</p></div>
+    <div class="footer-links"><h4>サービス</h4><a href="#activity">活動領域</a><a href="#scenes">サポート内容</a><a href="#pricing">料金プラン</a><a href="#contact">お問い合わせ</a></div>
+    <div class="footer-links"><h4>会社情報</h4><a href="https://ak-analytics.jp" target="_blank">会社サイト</a><a href="https://ak-analytics.jp/privacy-policy" target="_blank">プライバシーポリシー</a><a href="https://ak-analytics.jp/contact" target="_blank">お問い合わせフォーム</a></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 K&Aプロジェクト合同会社. All rights reserved.</p></div>
+</footer>
+
+<script>
+const navHeader = document.getElementById('navHeader');
+window.addEventListener('scroll', () => navHeader.classList.toggle('visible', window.pageYOffset > 300));
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in-view'); });
+}, { threshold: 0.2 });
+document.querySelectorAll('section').forEach(section => observer.observe(section));
+
+const tooltipData = {
+  mental: '🧠 メンタルヘルス対策\n\n不調の予防、早期発見、復職支援など、心の健康に関わるすべてのサポートを行います。',
+  career: '👔 キャリア形成支援\n\n仕事のやりがい、キャリアの方向性、スキルアップなど、働く人の成長を支援します。',
+  workplace: '🏢 職場環境改善\n\n人間関係の改善、コミュニケーション向上、ハラスメント対策など、働きやすい職場づくりを支援します。'
+};
+const tooltip = document.getElementById('tooltip');
+document.querySelectorAll('.activity-circle').forEach(circle => {
+  circle.addEventListener('mouseenter', () => {
+    tooltip.textContent = tooltipData[circle.dataset.tooltip];
+    tooltip.style.whiteSpace = 'pre-line';
+    tooltip.classList.add('show');
+    const rect = circle.getBoundingClientRect();
+    const containerRect = circle.closest('.activity-container').getBoundingClientRect();
+    tooltip.style.left = Math.max(10, rect.left - containerRect.left + rect.width / 2 - 140) + 'px';
+    tooltip.style.top = (rect.bottom - containerRect.top + 15) + 'px';
+  });
+  circle.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+});
+
+// 横スクロールカルーセル（最後のカードが画面中央で止まる）
+function setupCarousel(carouselId, indicatorId, cardCount) {
+  const carousel = document.getElementById(carouselId);
+  const indicator = document.getElementById(indicatorId);
+  const section = carousel.closest('section');
+  let currentIndex = 0, isInSection = false;
+  
+  for (let i = 0; i < cardCount; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'scroll-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => scrollToIndex(i));
+    indicator.appendChild(dot);
+  }
+  
+  function updateIndicator() {
+    indicator.querySelectorAll('.scroll-dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+  }
+  
+  function scrollToIndex(index) {
+    const card = carousel.querySelector('.scene-card, .service-card');
+    const gap = parseInt(getComputedStyle(carousel).gap) || 24;
+    const cardWidth = card.offsetWidth + gap;
+    const containerWidth = carousel.parentElement.offsetWidth;
+    
+    currentIndex = Math.max(0, Math.min(index, cardCount - 1));
+    
+    let translateX;
+    if (currentIndex === cardCount - 1) {
+      const lastCardCenter = (cardCount - 1) * cardWidth + (card.offsetWidth / 2);
+      const screenCenter = containerWidth / 2;
+      translateX = lastCardCenter - screenCenter;
+    } else {
+      translateX = currentIndex * cardWidth;
+    }
+    
+    carousel.style.transform = `translateX(-${Math.max(0, translateX)}px)`;
+    updateIndicator();
+  }
+  
+  new IntersectionObserver((entries) => {
+    entries.forEach(entry => isInSection = entry.isIntersecting && entry.intersectionRatio > 0.5);
+  }, { threshold: [0.5] }).observe(section);
+  
+  section.addEventListener('wheel', (e) => {
+    if (!isInSection) return;
+    const atStart = currentIndex === 0 && e.deltaY < 0;
+    const atEnd = currentIndex === cardCount - 1 && e.deltaY > 0;
+    if (!atStart && !atEnd) { e.preventDefault(); scrollToIndex(currentIndex + (e.deltaY > 0 ? 1 : -1)); }
+  }, { passive: false });
+  
+  let touchStartX = 0;
+  carousel.addEventListener('touchstart', (e) => touchStartX = e.touches[0].clientX);
+  carousel.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) scrollToIndex(currentIndex + (diff > 0 ? 1 : -1));
+  });
+}
+
+setupCarousel('scenesCarousel', 'scenesIndicator', 6);
+setupCarousel('servicesCarousel', 'servicesIndicator', 5);
+</script>
+
+</body>
+</html>
