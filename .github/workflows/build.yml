@@ -1,0 +1,61 @@
+name: build-check-deploy
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      pages: ${{ steps.cfg.outputs.pages }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: cfg
+        name: site.json を読む
+        run: |
+          python -c "import json;c=json.load(open('site.json'));print('pages='+('true' if c.get('github_pages') else 'false'));print('base='+(c.get('backup_url') or ''))" >> "$GITHUB_OUTPUT"
+      - name: Install Playwright
+        run: |
+          pip install playwright==1.48.0
+          python -m playwright install --with-deps chromium
+      - name: 承認済みの更新リストがあるか（PRのみ）
+        if: github.event_name == 'pull_request'
+        run: python tools/check_update_record.py origin/${{ github.base_ref }}
+      - name: Build
+        run: python tools/build.py --base "${{ steps.cfg.outputs.base }}"
+      - name: Check（エラー・はみ出し・画像・カスタムエレメント）
+        run: python tools/check.py
+      - name: Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: shots/
+      - name: Upload site
+        if: github.ref == 'refs/heads/main' && steps.cfg.outputs.pages == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.pages == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.d.outputs.page_url }}
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4
