@@ -1,0 +1,17 @@
+{
+ "name": "conditioner",
+ "title": "働く心のコンディショナー",
+ "mode": "static",
+ "tag": "ka-conditioner",
+ "company": "合同会社K&Aプロジェクト",
+ "target": "働く心のコンディショナー LP",
+ "content": "content/text.json",
+ "images": {
+  "IMG_1": "img-1-f2b8ee3d.png"
+ },
+ "production_url": "",
+ "backup_url": "https://k-yoshida-spec.github.io/mental-conditioning-lp/",
+ "github_pages": true,
+ "nav_selector": "[data-go]",
+ "ce_replace": []
+}

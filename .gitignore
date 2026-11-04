@@ -1,0 +1,8 @@
+gh_token*
+dist/
+shots/
+__pycache__/
+PP/
+送付用/
+_backup/
+*.pptx

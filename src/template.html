@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⟦title.001⟧</title>
+<meta name="description" content="⟦title.002⟧">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sage: #8FAE8B;
+  --sage-light: #B5D0B0;
+  --sage-dark: #6B8E68;
+  --cream: #FDF8F3;
+  --cream-dark: #F5EDE4;
+  --warm-white: #FFFCF8;
+  --peach: #F5D5C8;
+  --peach-light: #FBE8E0;
+  --text: #3D3D3D;
+  --text-light: #6B6B6B;
+  --text-muted: #8B8B8B;
+  --shadow-soft: 0 4px 20px rgba(139, 115, 85, 0.08);
+  --shadow-medium: 0 8px 30px rgba(139, 115, 85, 0.12);
+  --shadow-warm: 0 10px 40px rgba(143, 174, 139, 0.15);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Zen Maru Gothic', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: 
+    radial-gradient(ellipse at 0% 0%, rgba(181, 208, 176, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(245, 213, 200, 0.3) 0%, transparent 50%),
+    var(--cream);
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.2rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(253, 248, 243, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(143, 174, 139, 0.15);
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+}
+.nav.visible { transform: translateY(0); }
+.nav-logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--sage-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--sage-dark); }
+
+section {
+  padding: 100px 5%;
+  position: relative;
+}
+
+/* Hero Section - インパクト強化 */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(181, 208, 176, 0.25) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+  animation: float-slow 15s ease-in-out infinite;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(245, 213, 200, 0.25) 0%, transparent 70%);
+  bottom: -150px;
+  left: -150px;
+  animation: float-slow 18s ease-in-out infinite reverse;
+}
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 30px); }
+}
+.hero-content { position: relative; z-index: 1; max-width: 850px; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  background: white;
+  border: 1px solid var(--sage-light);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: var(--sage-dark);
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-soft);
+}
+.hero-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: gentle-bounce 3s ease-in-out infinite;
+}
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.hero-title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+.hero-title .highlight {
+  color: var(--sage-dark);
+  position: relative;
+}
+.hero-title .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: rgba(181, 208, 176, 0.4);
+  z-index: -1;
+  border-radius: 3px;
+}
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  font-weight: 400;
+}
+/* トータルサポートの強調 */
+.hero-flow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+.hero-flow-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--sage-dark);
+  box-shadow: var(--shadow-soft);
+}
+.hero-flow-arrow {
+  color: var(--sage);
+  font-size: 1.2rem;
+}
+.hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.btn {
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary {
+  background: var(--sage);
+  color: white;
+  box-shadow: var(--shadow-warm);
+}
+.btn-primary:hover {
+  background: var(--sage-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(143, 174, 139, 0.25);
+}
+.btn-secondary {
+  background: white;
+  color: var(--sage-dark);
+  border: 2px solid var(--sage-light);
+}
+.btn-secondary:hover {
+  background: var(--sage-light);
+  color: white;
+}
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  animation: gentle-bounce 2s ease-in-out infinite;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+.section-tag {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  background: var(--sage-light);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+}
+.section-desc {
+  color: var(--text-light);
+  font-size: 1.05rem;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+/* Value Proposition - 新セクション */
+.value-prop {
+  background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+  color: white;
+  padding: 60px 5%;
+}
+.value-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+.value-title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+.value-flow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.value-step {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  min-width: 160px;
+}
+.value-step-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.value-step-title { font-size: 1.1rem; font-weight: 700; }
+.value-step-desc { font-size: 0.85rem; opacity: 0.9; margin-top: 0.3rem; }
+.value-arrow { font-size: 1.5rem; opacity: 0.7; }
+.value-note {
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.message { background: var(--warm-white); }
+.message-box {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 32px;
+  padding: 3rem 4rem;
+  border-left: 6px solid var(--sage);
+  box-shadow: var(--shadow-medium);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.message-box.in-view { opacity: 1; transform: translateY(0); }
+.message-box p {
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 2.2;
+  color: var(--text);
+}
+
+.problems { background: var(--cream); }
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.bento-item {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(143, 174, 139, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.bento-item.in-view { opacity: 1; transform: translateY(0); }
+.bento-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+  border-color: var(--sage-light);
+}
+
+.bento-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--peach-light);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+}
+.bento-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.bento-desc {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+/* 解決への矢印 */
+.solution-bridge {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 2rem;
+  color: var(--sage);
+}
+
+.scenes { background: var(--warm-white); }
+.scenes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.scene-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(143, 174, 139, 0.1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.5s ease;
+}
+.scene-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--sage-light), var(--peach));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.scene-card.in-view { opacity: 1; transform: scale(1); }
+.scene-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-medium);
+}
+.scene-card:hover::before { opacity: 1; }
+.scene-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--cream-dark), var(--peach-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 1.2rem;
+}
+.scene-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: var(--text);
+}
+.scene-desc {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* アプローチ */
+.approach { background: var(--cream); }
+.approach-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.approach-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(143, 174, 139, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.approach-card.in-view { opacity: 1; transform: translateY(0); }
+.approach-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+.approach-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--sage-light), var(--cream-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1rem;
+}
+.approach-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--sage-dark); }
+.approach-desc { color: var(--text-light); font-size: 0.9rem; line-height: 1.6; }
+
+.flow {
+  background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+  color: white;
+  padding: 80px 5%;
+}
+.flow .section-tag { background: rgba(255,255,255,0.2); }
+.flow .section-title { color: white; }
+.flow .section-desc { color: rgba(255,255,255,0.85); }
+.flow-container {
+  max-width: min(80vh, 600px);
+  margin: 0 auto;
+  aspect-ratio: 1;
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s ease;
+}
+.flow-container.in-view { opacity: 1; transform: scale(1); }
+.flow-svg { width: 100%; height: 100%; }
+@keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.flow-ring { transform-origin: center; animation: rotate-slow 60s linear infinite; }
+.flow-node { transition: transform 0.3s; cursor: pointer; }
+.flow-node:hover { transform: scale(1.08); }
+.flow-desc {
+  text-align: center;
+  margin-top: 2rem;
+  color: rgba(255,255,255,0.9);
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.services { background: var(--warm-white); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.service-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(143, 174, 139, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.service-card.in-view { opacity: 1; transform: translateY(0); }
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-medium);
+}
+.service-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--sage-light), var(--peach-light));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1rem;
+}
+.service-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+.service-time {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: var(--sage-light);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.service-desc { color: var(--text-light); font-size: 0.9rem; line-height: 1.6; }
+
+.pricing { background: var(--cream); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.pricing-card {
+  background: white;
+  border-radius: 28px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(143, 174, 139, 0.1);
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.pricing-card.in-view { opacity: 1; transform: translateY(0); }
+.pricing-card.featured {
+  background: linear-gradient(135deg, white 0%, var(--peach-light) 100%);
+  border: 2px solid var(--sage);
+  transform: scale(1.03);
+}
+.pricing-card.featured.in-view { transform: scale(1.03); }
+.pricing-card:hover { transform: translateY(-6px); }
+.pricing-card.featured:hover { transform: scale(1.03) translateY(-6px); }
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.4rem 1.5rem;
+  background: var(--sage);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.pricing-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem; }
+.pricing-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--sage-dark);
+  margin-bottom: 0.3rem;
+}
+.pricing-period { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+.pricing-list { list-style: none; text-align: left; margin-bottom: 1.5rem; }
+.pricing-list li {
+  padding: 0.7rem 0;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+.pricing-list li::before {
+  content: '✓';
+  color: var(--sage);
+  font-weight: 700;
+}
+
+.trust { background: var(--warm-white); }
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 950px;
+  margin: 0 auto;
+}
+.trust-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(143, 174, 139, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+.trust-card.in-view { opacity: 1; transform: translateY(0); }
+.trust-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+.trust-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--cream-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 1.2rem;
+}
+.trust-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+.trust-desc { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; }
+
+.contact {
+  background: linear-gradient(180deg, var(--warm-white), var(--cream));
+}
+.contact-box {
+  max-width: 650px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 32px;
+  padding: 3.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-medium);
+  border: 1px solid rgba(143, 174, 139, 0.15);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.6s ease;
+}
+.contact-box.in-view { opacity: 1; transform: scale(1); }
+.contact-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--sage), var(--peach));
+}
+.contact-icon { font-size: 3rem; margin-bottom: 1rem; }
+.contact-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+.contact-desc {
+  color: var(--text-light);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+}
+.contact-item {
+  margin: 1.2rem 0;
+  font-size: 1.2rem;
+}
+.contact-item strong {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.contact-item span {
+  color: var(--sage-dark);
+  font-weight: 700;
+}
+.contact-note {
+  margin-top: 2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+footer {
+  background: var(--text);
+  color: white;
+  padding: 4rem 5% 2rem;
+}
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 4rem;
+}
+.footer-logo-link {
+  display: inline-block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+.footer-logo-link:hover {
+  transform: translateY(-3px);
+}
+.footer-logo {
+  height: 110px;
+  margin-bottom: 1.2rem;
+  background: white;
+  padding: 8px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  transition: box-shadow 0.3s ease;
+}
+.footer-logo-link:hover .footer-logo {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+.footer-brand h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--sage-light);
+}
+.footer-brand p { color: #aaa; font-size: 0.9rem; line-height: 1.8; }
+.footer-links h4 { font-size: 1rem; margin-bottom: 1.2rem; font-weight: 600; }
+.footer-links a {
+  display: block;
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 0.7rem;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--sage-light); }
+.footer-bottom {
+  text-align: center;
+  padding-top: 2.5rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid #555;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 1000px) {
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .bento-item.large { grid-column: span 1; }
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+  .approach-grid { grid-template-columns: repeat(2, 1fr); }
+  .value-flow { gap: 0.8rem; }
+  .value-step { min-width: 140px; padding: 1.2rem 1.5rem; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .scenes-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+  .pricing-card.featured, .pricing-card.featured.in-view { transform: none; }
+  .trust-grid { grid-template-columns: 1fr; max-width: 380px; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .approach-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { grid-template-columns: 1fr; text-align: center; }
+  .message-box { padding: 2rem; }
+  .hero-flow { gap: 0.5rem; }
+  .hero-flow-item { padding: 0.5rem 1rem; font-size: 0.85rem; }
+  .value-arrow { display: none; }
+  .value-step { min-width: 100%; }
+}
+@media (max-width: 600px) {
+  section { padding: 70px 5%; }
+  .bento-grid, .scenes-grid, .services-grid, .approach-grid { grid-template-columns: 1fr; max-width: 380px; }
+  .hero-title { font-size: 1.9rem; }
+  .contact-box { padding: 2.5rem 1.5rem; }
+  .flow-container { max-width: min(70vh, 320px); }
+  .hero-flow-item { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-gradient"></div>
+
+<nav class="nav" id="nav">
+  <div class="nav-logo">⟦nav.001⟧</div>
+  <div class="nav-links">
+    <a href="#scenes">⟦nav.002⟧</a>
+    <a href="#services">⟦nav.003⟧</a>
+    <a href="#pricing">⟦nav.004⟧</a>
+    <a href="#contact">⟦nav.005⟧</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">⟦hero.001⟧</div>
+    <div class="hero-icon">💚</div>
+    <h1 class="hero-title">
+      ⟦hero.002⟧<br>
+      <span class="highlight">⟦hero.003⟧</span>
+    </h1>
+    <p class="hero-subtitle">
+      ⟦hero.004⟧<br>⟦hero.005⟧
+    </p>
+    <⟦hero.006⟧>
+    <div class="hero-flow">
+      <div class="hero-flow-item">⟦hero.007⟧</div>
+      <span class="hero-flow-arrow">→</span>
+      <div class="hero-flow-item">⟦hero.008⟧</div>
+      <span class="hero-flow-arrow">→</span>
+      <div class="hero-flow-item">⟦hero.009⟧</div>
+      <span class="hero-flow-arrow">→</span>
+      <div class="hero-flow-item">⟦hero.010⟧</div>
+    </div>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">⟦hero.011⟧</a>
+      <a href="#value" class="btn btn-secondary">⟦hero.012⟧</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">↓ Scroll</div>
+</section>
+
+<⟦hero.013⟧>
+<section class="value-prop" id="value">
+  <div class="value-container">
+    <h2 class="value-title">⟦value-prop.001⟧</h2>
+    <div class="value-flow">
+      <div class="value-step">
+        <div class="value-step-icon">😰</div>
+        <div class="value-step-title">⟦value-prop.002⟧</div>
+        <div class="value-step-desc">⟦value-prop.003⟧</div>
+      </div>
+      <span class="value-arrow">→</span>
+      <div class="value-step">
+        <div class="value-step-icon">👂</div>
+        <div class="value-step-title">⟦value-prop.004⟧</div>
+        <div class="value-step-desc">⟦value-prop.005⟧</div>
+      </div>
+      <span class="value-arrow">→</span>
+      <div class="value-step">
+        <div class="value-step-icon">🤝</div>
+        <div class="value-step-title">⟦value-prop.006⟧</div>
+        <div class="value-step-desc">⟦value-prop.007⟧</div>
+      </div>
+      <span class="value-arrow">→</span>
+      <div class="value-step">
+        <div class="value-step-icon">📈</div>
+        <div class="value-step-title">⟦value-prop.008⟧</div>
+        <div class="value-step-desc">⟦value-prop.009⟧</div>
+      </div>
+    </div>
+    <p class="value-note">⟦value-prop.010⟧<br>⟦value-prop.011⟧</p>
+  </div>
+</section>
+
+<section class="message">
+  <div class="message-box">
+    <p>⟦message.001⟧<br>⟦message.002⟧<br>⟦message.003⟧</p>
+  </div>
+</section>
+
+<section class="problems" id="problems">
+  <div class="section-header">
+    <span class="section-tag">⟦problems.001⟧</span>
+    <h2 class="section-title">⟦problems.002⟧</h2>
+  </div>
+  <div class="bento-grid">
+    <div class="bento-item">
+      <div class="bento-icon">😰</div>
+      <h3 class="bento-title">⟦problems.003⟧</h3>
+      <p class="bento-desc">⟦problems.004⟧</p>
+    </div>
+    <div class="bento-item">
+      <div class="bento-icon">📉</div>
+      <h3 class="bento-title">⟦problems.005⟧</h3>
+      <p class="bento-desc">⟦problems.006⟧</p>
+    </div>
+    <div class="bento-item">
+      <div class="bento-icon">💔</div>
+      <h3 class="bento-title">⟦problems.007⟧</h3>
+      <p class="bento-desc">⟦problems.008⟧</p>
+    </div>
+    <div class="bento-item">
+      <div class="bento-icon">😓</div>
+      <h3 class="bento-title">⟦problems.009⟧</h3>
+      <p class="bento-desc">⟦problems.010⟧</p>
+    </div>
+  </div>
+  <div class="solution-bridge">⟦problems.011⟧</div>
+</section>
+
+<section class="scenes" id="scenes">
+  <div class="section-header">
+    <span class="section-tag">⟦scenes.001⟧</span>
+    <h2 class="section-title">⟦scenes.002⟧</h2>
+    <p class="section-desc">⟦scenes.003⟧</p>
+  </div>
+  <div class="scenes-grid">
+    <div class="scene-card">
+      <div class="scene-icon">💚</div>
+      <h3 class="scene-title">⟦scenes.004⟧</h3>
+      <p class="scene-desc">⟦scenes.005⟧"⟦scenes.006⟧"⟦scenes.007⟧</p>
+    </div>
+    <div class="scene-card">
+      <div class="scene-icon">🔔</div>
+      <h3 class="scene-title">⟦scenes.008⟧</h3>
+      <p class="scene-desc">⟦scenes.009⟧</p>
+    </div>
+    <div class="scene-card">
+      <div class="scene-icon">🏥</div>
+      <h3 class="scene-title">⟦value-prop.006⟧</h3>
+      <p class="scene-desc">⟦scenes.010⟧</p>
+    </div>
+    <div class="scene-card">
+      <div class="scene-icon">🌿</div>
+      <h3 class="scene-title">⟦scenes.011⟧</h3>
+      <p class="scene-desc">⟦scenes.012⟧</p>
+    </div>
+    <div class="scene-card">
+      <div class="scene-icon">👔</div>
+      <h3 class="scene-title">⟦scenes.013⟧</h3>
+      <p class="scene-desc">⟦scenes.014⟧</p>
+    </div>
+    <div class="scene-card">
+      <div class="scene-icon">🏢</div>
+      <h3 class="scene-title">⟦scenes.015⟧</h3>
+      <p class="scene-desc">⟦scenes.016⟧</p>
+    </div>
+  </div>
+</section>
+
+<section class="approach" id="approach">
+  <div class="section-header">
+    <span class="section-tag">⟦approach.001⟧</span>
+    <h2 class="section-title">⟦approach.002⟧</h2>
+    <p class="section-desc">⟦approach.003⟧</p>
+  </div>
+  <div class="approach-grid">
+    <div class="approach-card">
+      <div class="approach-icon">🌱</div>
+      <h3 class="approach-title">⟦approach.004⟧</h3>
+      <p class="approach-desc">⟦approach.005⟧</p>
+    </div>
+    <div class="approach-card">
+      <div class="approach-icon">🎯</div>
+      <h3 class="approach-title">⟦approach.006⟧</h3>
+      <p class="approach-desc">⟦approach.007⟧</p>
+    </div>
+    <div class="approach-card">
+      <div class="approach-icon">👥</div>
+      <h3 class="approach-title">⟦approach.008⟧</h3>
+      <p class="approach-desc">⟦approach.009⟧</p>
+    </div>
+    <div class="approach-card">
+      <div class="approach-icon">📈</div>
+      <h3 class="approach-title">⟦approach.010⟧</h3>
+      <p class="approach-desc">⟦approach.011⟧</p>
+    </div>
+  </div>
+</section>
+
+<section class="flow" id="flow">
+  <div class="section-header">
+    <span class="section-tag">⟦flow.001⟧</span>
+    <h2 class="section-title">⟦flow.002⟧</h2>
+    <p class="section-desc">⟦flow.003⟧</p>
+  </div>
+  <div class="flow-container">
+    <svg class="flow-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <g class="flow-ring">
+        <circle cx="300" cy="300" r="220" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" stroke-dasharray="15 10"/>
+      </g>
+      <g class="flow-node"><circle cx="300" cy="80" r="70" fill="white" filter="drop-shadow(0 4px 15px rgba(0,0,0,0.1))"/><text x="300" y="65" text-anchor="middle" font-size="36">👂</text><text x="300" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#6B8E68">⟦flow.004⟧</text></g>
+      <g class="flow-node"><circle cx="510" cy="220" r="70" fill="white" filter="drop-shadow(0 4px 15px rgba(0,0,0,0.1))"/><text x="510" y="205" text-anchor="middle" font-size="36">🔍</text><text x="510" y="240" text-anchor="middle" font-size="16" font-weight="bold" fill="#6B8E68">⟦flow.005⟧</text></g>
+      <g class="flow-node"><circle cx="430" cy="450" r="70" fill="white" filter="drop-shadow(0 4px 15px rgba(0,0,0,0.1))"/><text x="430" y="435" text-anchor="middle" font-size="36">🤝</text><text x="430" y="470" text-anchor="middle" font-size="16" font-weight="bold" fill="#6B8E68">⟦flow.006⟧</text></g>
+      <g class="flow-node"><circle cx="170" cy="450" r="70" fill="white" filter="drop-shadow(0 4px 15px rgba(0,0,0,0.1))"/><text x="170" y="435" text-anchor="middle" font-size="36">🌱</text><text x="170" y="470" text-anchor="middle" font-size="16" font-weight="bold" fill="#6B8E68">⟦flow.007⟧</text></g>
+      <g class="flow-node"><circle cx="90" cy="220" r="70" fill="white" filter="drop-shadow(0 4px 15px rgba(0,0,0,0.1))"/><text x="90" y="205" text-anchor="middle" font-size="36">✨</text><text x="90" y="240" text-anchor="middle" font-size="16" font-weight="bold" fill="#6B8E68">⟦flow.008⟧</text></g>
+      <circle cx="300" cy="300" r="45" fill="rgba(255,255,255,0.15)"/>
+      <text x="300" y="295" text-anchor="middle" font-size="11" fill="white">⟦flow.009⟧</text>
+      <text x="300" y="310" text-anchor="middle" font-size="11" fill="white">⟦flow.010⟧</text>
+    </svg>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="section-header">
+    <span class="section-tag">⟦nav.003⟧</span>
+    <h2 class="section-title">⟦services.001⟧</h2>
+    <p class="section-desc">⟦services.002⟧</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🤝</div>
+      <h3 class="service-title">⟦services.003⟧</h3>
+      <span class="service-time">⟦services.004⟧</span>
+      <p class="service-desc">⟦services.005⟧</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">👂</div>
+      <h3 class="service-title">⟦services.006⟧</h3>
+      <span class="service-time">⟦services.007⟧</span>
+      <p class="service-desc">⟦services.008⟧</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">👔</div>
+      <h3 class="service-title">⟦services.009⟧</h3>
+      <span class="service-time">⟦services.010⟧</span>
+      <p class="service-desc">⟦services.011⟧</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <h3 class="service-title">⟦services.012⟧</h3>
+      <span class="service-time">⟦services.010⟧</span>
+      <p class="service-desc">⟦services.013⟧</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <h3 class="service-title">⟦services.014⟧</h3>
+      <span class="service-time">⟦services.015⟧</span>
+      <p class="service-desc">⟦services.016⟧</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="section-header">
+    <span class="section-tag">⟦nav.004⟧</span>
+    <h2 class="section-title">⟦pricing.001⟧</h2>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3 class="pricing-name">⟦pricing.002⟧</h3>
+      <div class="pricing-price">¥120,000</div>
+      <div class="pricing-period">⟦pricing.003⟧</div>
+      <ul class="pricing-list">
+        <li>⟦pricing.004⟧</li>
+        <li>⟦pricing.005⟧</li>
+      </ul>
+      <a href="#contact" class="btn btn-secondary" style="width:100%;">⟦nav.005⟧</a>
+    </div>
+    <div class="pricing-card featured">
+      <span class="pricing-badge">⟦pricing.006⟧</span>
+      <h3 class="pricing-name">⟦pricing.007⟧</h3>
+      <div class="pricing-price">¥200,000</div>
+      <div class="pricing-period">⟦pricing.003⟧</div>
+      <ul class="pricing-list">
+        <li>⟦pricing.008⟧</li>
+        <li>⟦pricing.005⟧</li>
+        <li>⟦pricing.009⟧</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary" style="width:100%;">⟦nav.005⟧</a>
+    </div>
+    <div class="pricing-card">
+      <h3 class="pricing-name">⟦pricing.010⟧</h3>
+      <div class="pricing-price">¥350,000</div>
+      <div class="pricing-period">⟦pricing.003⟧</div>
+      <ul class="pricing-list">
+        <li>⟦pricing.011⟧</li>
+        <li>⟦pricing.012⟧</li>
+        <li>⟦pricing.013⟧</li>
+      </ul>
+      <a href="#contact" class="btn btn-secondary" style="width:100%;">⟦nav.005⟧</a>
+    </div>
+  </div>
+</section>
+
+<section class="trust" id="trust">
+  <div class="section-header">
+    <span class="section-tag">⟦trust.001⟧</span>
+    <h2 class="section-title">⟦trust.002⟧</h2>
+  </div>
+  <div class="trust-grid">
+    <div class="trust-card">
+      <div class="trust-icon">🔒</div>
+      <h3 class="trust-title">⟦trust.003⟧</h3>
+      <p class="trust-desc">⟦trust.004⟧</p>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">🎓</div>
+      <h3 class="trust-title">⟦trust.005⟧</h3>
+      <p class="trust-desc">⟦trust.006⟧</p>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">📍</div>
+      <h3 class="trust-title">⟦trust.007⟧</h3>
+      <p class="trust-desc">⟦trust.008⟧</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-box">
+    <div class="contact-icon">💬</div>
+    <h2 class="contact-title">⟦contact.001⟧</h2>
+    <p class="contact-desc">⟦contact.002⟧</p>
+    <div class="contact-item">
+      <strong>⟦contact.003⟧</strong>
+      <span>info@ak-analytics.jp</span>
+    </div>
+    <div class="contact-item">
+      <strong>⟦contact.004⟧</strong>
+      <span>050-6861-4697</span>
+    </div>
+    <a href="mailto:info@ak-analytics.jp" class="btn btn-primary" style="margin-top:1.5rem;">⟦contact.005⟧</a>
+    <p class="contact-note">⟦contact.006⟧<br>⟦contact.007⟧</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <a href="https://www.ak-analytics.jp/" target="_blank" rel="noopener" class="footer-logo-link"><img src="{{IMG_1}}" alt="K&A PROJECT" class="footer-logo"></a>
+      <h3>⟦nav.001⟧</h3>
+      <p>⟦footer.001⟧<br>⟦footer.002⟧<br>⟦footer.003⟧</p>
+    </div>
+    <div class="footer-links">
+      <h4>⟦nav.003⟧</h4>
+      <a href="#scenes">⟦footer.004⟧</a>
+      <a href="#services">⟦nav.003⟧</a>
+      <a href="#pricing">⟦footer.005⟧</a>
+      <a href="#contact">⟦nav.005⟧</a>
+    </div>
+    <div class="footer-links">
+      <h4>⟦footer.006⟧</h4>
+      <a href="https://ak-analytics.jp" target="_blank">⟦footer.007⟧</a>
+      <a href="https://ak-analytics.jp/privacy-policy" target="_blank">⟦footer.008⟧</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>⟦footer.009⟧</p>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('visible', window.scrollY > 100);
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('in-view');
+      }, index * 80);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.bento-item, .scene-card, .service-card, .pricing-card, .trust-card, .flow-container, .contact-box, .message-box, .approach-card').forEach(el => {
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
